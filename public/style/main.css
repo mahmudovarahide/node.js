@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+}
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+header {
+  background-color: rgb(42, 42, 190);
+  padding: 15px 25px;
+  margin-bottom: 20px;
+}
+header nav ul {
+  display: flex;
+  gap: 20px;
+}
+header nav ul li a {
+  color: #fff;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+.add-product {
+  padding: 0 20px;
+}
+.add-product form input {
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  outline: none;
+}
+.add-product form button {
+  padding: 10px 15px;
+  border: none;
+  background-color: rgb(42, 42, 190);
+  color: #fff;
+  cursor: pointer;
+}
