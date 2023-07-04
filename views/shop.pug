@@ -5,7 +5,7 @@ html
         meta(http-equiv="X-UA-Compatible" content="IE=edge")
         meta(name="viewport" content='width=device-width, initial-scale=1.0')
         link(rel="stylesheet" href="style/main.css")
-        title Document
+        title #{docTitle}
     body
 
         header
@@ -15,5 +15,17 @@ html
                         a(href="/") Shop
                     li 
                         a(href="/admin/add-product") Add Product
-        main 
-            h1 Html Node Page
+        main.main-section
+            if prods.length > 0
+                .d-flex 
+                    each products in prods 
+                        .box 
+                            h1 #{products.title}
+                            .image-box 
+                                img(src="https://www.clipartqueen.com/image-files/stable-colored-books.png" alt="")
+                            .price-box 
+                                h6 19$
+            else 
+                h1 Not Found Products
+
+
