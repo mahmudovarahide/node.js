@@ -1,8 +1,5 @@
 extends /layouts/layout.pug
 
-block styles 
-    title #{pageTitle}
-
 block content 
     main.add-product
         form(action='/admin/add-product' method='POST')

@@ -5,13 +5,14 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible" content="IE=edge")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet" href="/style/main.css")
+        title #{pageTitle}
         block styles
     body 
         header
             nav 
                 ul 
                     li 
-                        a(href="/") Shop
+                        a(href="/" class=(path === '/'? 'active': '' )) Shop
                     li 
-                        a(href="/admin/add-product") Add Product
+                        a(href="/admin/add-product" class=(path === '/admin/add-product'? 'active': '' )) Add Product
         block content
