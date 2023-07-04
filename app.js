@@ -23,8 +23,11 @@ app.use("/admin", adminData.routes);
 
 app.use(shopRoutes);
 
+app.locals.basedir = path.join(__dirname, 'views');
+
 app.use("/", (req, res, next) => {
-  res.status(404).sendFile(path.join(rooDir, "views", "404.html"));
+  res.status(404).render('404')
+  // res.status(404).sendFile(path.join(rooDir, "views", "404.html"));
 });
 
 app.listen(3000);
