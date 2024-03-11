@@ -1,9 +1,0 @@
-extends /layouts/layout.pug
-
-block content 
-    main.add-product
-        form(action='/admin/add-product' method='POST')
-            input(type='text' name='title' placeholder='product name...')
-            button(type='submit')  Add product
-
-

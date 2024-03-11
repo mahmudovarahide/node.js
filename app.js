@@ -4,10 +4,8 @@ const express = require("express");
 
 const app = express();
 
-app.set("view engine", "pug");
+app.set("view engine", "ejs");
 app.set("views", "views");
-
-const rooDir = require("./util/path");
 
 const adminData = require("./routes/admin.js");
 
@@ -27,7 +25,6 @@ app.locals.basedir = path.join(__dirname, "views");
 
 app.use("/", (req, res, next) => {
   res.status(404).render("404", { pageTitle: "Page Not Found" });
-  // res.status(404).sendFile(path.join(rooDir, "views", "404.html"));
 });
 
 app.listen(3000);
