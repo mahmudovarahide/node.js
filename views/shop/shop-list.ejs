@@ -1,0 +1,38 @@
+<%- include('../includes/head.ejs') %>
+
+    <body>
+        <%- include('../includes/header.ejs') %>
+            <main class="main-section">
+                <% if(prods.length> 0) { %>
+                    <div class="d-flex">
+                        <% for(let product of prods){ %>
+                            <div class="box">
+                                <h1>
+                                    <%= product.title %>
+                                </h1>
+                                <div class="image-box">
+                                    <img src="<%= product.imageUrl %>" alt="Books">
+                                </div>
+                                <div class="price-box">
+                                    <%= product.price %>
+                                </div>
+                                <div class="description">
+                                    <%= product.description %>
+                                </div>
+                                <div class="card-actions">
+                                    <a href="/products/<%= product.id %>" class="btn">Details</a>
+                                    <form action="/card" method="POST">
+                                        <button type="submit" class="add-card">Add to Card</button>
+                                        <input type="hidden" value="<%= product.id %>" name="productID">
+                                    </form>
+                                </div>
+                            </div>
+                            <% } %>
+                    </div>
+                    <% } else { %>
+                        <h1>Product not found</h1>
+                        <% } %>
+            </main>
+    </body>
+
+    </html>

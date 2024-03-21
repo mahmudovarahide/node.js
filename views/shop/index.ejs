@@ -1,7 +1,7 @@
-<%- include('includes/head.ejs') %>
+<%- include('../includes/head.ejs') %>
 
     <body>
-        <%- include('includes/header.ejs') %>
+        <%- include('../includes/header.ejs') %>
         <main class="main-section">
             <% if(prods.length > 0) { %>
             <div class="d-flex">
@@ -10,10 +10,11 @@
                     <h1><%= product.title %></h1>
                     <div class="image-box">
                         <img
-                            src="https://www.clipartqueen.com/image-files/stable-colored-books.png"
+                            src="<%= product.imageUrl %>"
                             alt="Books">
                     </div>
-                    <div class="price-box">$19</div>
+                    <div class="price-box"><%= product.price %></div>
+                    <div class="description"><%= product.description %></div>
                 </div>
                 <% } %>
             </div>

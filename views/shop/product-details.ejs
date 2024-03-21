@@ -1,0 +1,19 @@
+<%- include('../includes/head.ejs') %>
+
+    <body>
+        <%- include('../includes/header.ejs') %>
+
+        <main class="centered">
+            <h1><%= product.title %> </h1>
+            <img src="<%= product.imageUrl %>" alt="">
+            <h1><%= product.price %> </h1>
+            <h1><%= product.description %> </h1>
+            <form action="/card" method="POST">
+                <button class="btn" type="submit">Add to Card</button>
+                <input type="hidden" value="<%= product.id %>" name="productID">
+            </form>
+        </main>
+
+    </body>
+
+</html>
