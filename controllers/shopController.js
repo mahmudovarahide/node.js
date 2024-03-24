@@ -29,21 +29,49 @@ exports.getIndex = (req, res) => {
 };
 
 exports.getCard = (req, res) => {
-  Product.fetchAll((products) => {
-    res.render("shop/card", {
-      prods: products,
-      pageTitle: "Your Card",
-      path: "/card",
+  Card.getProducts((card) => {
+    Product.fetchAll((products) => {
+      const cardProducts = [];
+      for (const prod of products) {
+        const cardProductData = card.products.find(
+          (prod) => prod.id === prod.id
+        );
+        if (cardProductData) {
+          cardProducts.push({ productData: prod, qty: cardProductData });
+        }
+      }
+      res.render("shop/card", {
+        prods: cardProducts,
+        pageTitle: "Your Card",
+        path: "/card",
+        products: cardProducts,
+      });
     });
+  });
+};
+
+exports.postCardDeleteProduct = (req, res, next) => {
+  const prodID = req.body.productID;
+  Product.findByID(prodID, (product) => {
+    if (product) {
+      Card.deleteProductFromCard(prodID, product.price);
+      res.redirect("/card");
+    } else {
+      next(new Error("Product not found"));
+    }
   });
 };
 
 exports.postCard = (req, res, next) => {
   const prodID = req.body.productID;
   Product.findByID(prodID, (product) => {
-    Card.addProduct(prodID, product.price);
+    if (product) {
+      Card.addProduct(prodID, product.price);
+      res.redirect("/card");
+    } else {
+      next(new Error("Product not found"));
+    }
   });
-  res.redirect("/card");
 };
 
 exports.getCheckout = (req, res) => {

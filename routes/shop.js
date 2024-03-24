@@ -10,12 +10,12 @@ router.get("/products", shopController.getShops);
 
 router.get("/products/:productID", shopController.getShop);
 
-router.get("/products/delete");
-
 router.get("/card", shopController.getCard);
 
 router.post("/card", shopController.postCard);
 
 router.get("/checkout", shopController.getCheckout);
+
+router.post("/card-delete-btn", shopController.postCardDeleteProduct);
 
 module.exports = router;

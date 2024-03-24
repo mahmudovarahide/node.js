@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const Card = require("./card");
 
 const filePath = (fileName) => {
   return path.join(path.dirname(process.mainModule.filename), "data", fileName);
@@ -57,17 +58,26 @@ module.exports = class Products {
       callback(product);
     });
   }
-
   static deleteByID(id, callback) {
     getProductFromFile((products) => {
+      const productToDelete = products.find((prod) => prod.id === id);
+      if (!productToDelete) {
+        return callback(false);
+      }
+      const productPrice = productToDelete.price;
       const updatedProducts = products.filter((prod) => prod.id !== id);
-      fs.writeFile(filePath("product.json"), JSON.stringify(updatedProducts), (err) => {
-        if (err) {
-          console.log(err);
-          return callback(false);
+      fs.writeFile(
+        filePath("product.json"),
+        JSON.stringify(updatedProducts),
+        (err) => {
+          if (err) {
+            console.log(err);
+            return callback(false);
+          }
+          Card.deleteProductFromCard(id, productPrice);
+          callback(true);
         }
-        callback(true);
-      });
+      );
     });
   }
 };

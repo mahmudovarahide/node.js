@@ -38,4 +38,34 @@ module.exports = class Card {
       });
     });
   }
+
+  static deleteProductFromCard(id, productPrice) {
+    fs.readFile(filePath(), (err, fileContent) => {
+      if (err) {
+        return err;
+      }
+      let updateCard = { ...JSON.parse(fileContent) };
+      const product = updateCard.products.find((prod) => prod.id === id);
+      console.log(product)
+
+      updateCard.products = updateCard.products.filter(
+        (prod) => prod.id !== id
+      );
+      // const productQty = product.quantity;
+      updateCard.totalPrice = updateCard.totalPrice - productPrice ;
+      fs.writeFile(filePath(), JSON.stringify(updateCard), (err) => {
+        console.log(err);
+      });
+    });
+  }
+  static getProducts(callback) {
+    fs.readFile(filePath(), (err, fileContent) => {
+      const card = JSON.parse(fileContent);
+      if (err) {
+        return callback(null);
+      } else {
+        callback(card);
+      }
+    });
+  }
 };

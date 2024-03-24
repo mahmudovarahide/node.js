@@ -4,6 +4,8 @@ const express = require("express");
 
 const app = express();
 
+const db = require("./util/database.js");
+
 app.set("view engine", "ejs");
 app.set("views", "views");
 
@@ -22,6 +24,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/admin", adminRouters);
 
 app.use(shopRoutes);
+
+db.execute("SELECT * FROM `node-js`.products;").then().catch();
 
 app.locals.basedir = path.join(__dirname, "views");
 
