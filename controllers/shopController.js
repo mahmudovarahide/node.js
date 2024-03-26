@@ -2,30 +2,45 @@ const Product = require("../models/products");
 const Card = require("../models/card");
 
 exports.getShops = (req, res) => {
-  Product.fetchAll((products) => {
-    res.render("shop/shop-list", {
-      prods: products,
-      pageTitle: "All Products",
-      path: "/products",
+  Product.findAll()
+    .then((products) => {
+      res.render("shop/shop-list", {
+        prods: products,
+        pageTitle: "All Products",
+        path: "/products",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
 };
 
 exports.getShop = (req, res) => {
   const prodID = req.params.productID;
-  Product.findByID(prodID, (product) => {
-    res.render("shop/product-details", {
-      product: product,
-      pageTitle: product.title,
-      path: "/products",
-    });
-  });
+
+  Product.findByPk(prodID)
+    .then((products) => {
+      res.render("shop/product-details", {
+        product: products[0],
+        pageTitle: products.title,
+        path: "/products",
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.getIndex = (req, res) => {
-  Product.fetchAll((products) => {
-    res.render("shop/index", { prods: products, pageTitle: "Shop", path: "/" });
-  });
+  Product.findAll()
+    .then((products) => {
+      res.render("shop/index", {
+        prods: products,
+        pageTitle: "Shop",
+        path: "/",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.getCard = (req, res) => {

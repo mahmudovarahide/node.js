@@ -1,34 +1,38 @@
 const path = require("path");
-
 const express = require("express");
+const bodyParser = require("body-parser");
+const sequelize = require("./util/database.js");
+const Product = require("./models/products.js");
+const User = require("./models/user.js");
 
 const app = express();
-
-const db = require("./util/database.js");
 
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-const adminRouters = require("./routes/admin.js");
-
+const adminRoutes = require("./routes/admin.js");
 const shopRoutes = require("./routes/shop.js");
-
-const errorPageController = require("./controllers/errorController.js");
-
-const bodyParser = require("body-parser");
+const errorController = require("./controllers/errorController.js");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/admin", adminRouters);
-
+app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
-db.execute("SELECT * FROM `node-js`.products;").then().catch();
+app.use("/", errorController.getError);
 
-app.locals.basedir = path.join(__dirname, "views");
+Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
+User.hasMany(Product);
 
-app.use("/", errorPageController.getError);
-
-app.listen(3000);
+sequelize
+  .sync()
+  .then(() => {
+    return User.findByPk(1);
+  })
+  .then((user) => {
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
