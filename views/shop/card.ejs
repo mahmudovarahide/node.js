@@ -3,21 +3,23 @@
 <body>
     <%- include('../includes/header.ejs') %>
     <% if (prods.length > 0) { %>
+    <ul>
         <% prods.forEach(product => { %>
-            <% if (product.productData) { %>
-                <h1><%= product.productData.title %></h1>
-                <form action="/card-delete-btn" method="POST">
-                    <button class="btn btn-primary" type="submit">Card delete </button>
-                    <input type="hidden" value="<%= product.productData.id %>" name="productID">
-                </form>
-            <% } else { %>
-                <h1>No product data</h1>
-            <% } %>
+        <li class="d-flex flex-column justify-content-center align-items-center">
+            <h1><%= product.title %></h1>
+            <h2>Quantity : <%= product.cardItem.quantity %></h2>
+            <form action="/card-delete-btn" method="POST">
+                <button class="btn btn-primary" type="submit">Card delete</button>
+                <input type="hidden" value="<%= product.id %>" name="productID">
+            </form>
+        </li>
         <% }); %>
+    </ul>
+    <form action="/create-order" method="POST" class="d-flex flex-column justify-content-center align-items-center mt-5">
+        <button class="btn btn-danger" type="submit">Order Now</button>
+    </form>
     <% } else { %>
-        <h1>No products</h1>
+    <h1>No products</h1>
     <% } %>
-    
 </body>
-
 </html>

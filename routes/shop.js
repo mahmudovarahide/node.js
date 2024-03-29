@@ -16,6 +16,10 @@ router.post("/card", shopController.postCard);
 
 router.get("/checkout", shopController.getCheckout);
 
+router.post("/create-order", shopController.postOrder);
+
+router.get("/orders", shopController.getOrders);
+
 router.post("/card-delete-btn", shopController.postCardDeleteProduct);
 
 module.exports = router;
