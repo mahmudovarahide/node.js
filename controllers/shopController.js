@@ -2,7 +2,7 @@ const Product = require("../models/products");
 const Card = require("../models/card");
 
 exports.getShops = (req, res) => {
-  Product.findAll()
+  Product.fetchAll()
     .then((products) => {
       res.render("shop/shop-list", {
         prods: products,
@@ -19,7 +19,7 @@ exports.getShops = (req, res) => {
 exports.getShop = (req, res) => {
   const prodID = req.params.productID;
 
-  Product.findByPk(prodID)
+  Product.findById(prodID)
     .then((product) => {
       if (product) {
         res.render("shop/product-details", {
@@ -42,7 +42,7 @@ exports.getShop = (req, res) => {
 };
 
 exports.getIndex = (req, res) => {
-  Product.findAll()
+  Product.fetchAll()
     .then((products) => {
       res.render("shop/index", {
         prods: products,
