@@ -1,3 +1,4 @@
+
 <%- include('../includes/head.ejs') %>
 
 <body>
@@ -7,10 +8,10 @@
         <% prods.forEach(product => { %>
         <li class="d-flex flex-column justify-content-center align-items-center">
             <h1><%= product.title %></h1>
-            <h2>Quantity : <%= product.cardItem.quantity %></h2>
+            <h2>Quantity : <%= product.quantity %></h2>
             <form action="/card-delete-btn" method="POST">
                 <button class="btn btn-primary" type="submit">Card delete</button>
-                <input type="hidden" value="<%= product.id %>" name="productID">
+                <input type="hidden" value="<%= product._id %>" name="productID">
             </form>
         </li>
         <% }); %>
