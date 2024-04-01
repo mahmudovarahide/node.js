@@ -14,7 +14,7 @@ router.get("/card", shopController.getCard);
 
 router.post("/card", shopController.postCard);
 
-router.get("/checkout", shopController.getCheckout);
+// router.get("/checkout", shopController.getCheckout);
 
 router.post("/create-order", shopController.postOrder);
 

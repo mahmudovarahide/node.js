@@ -11,7 +11,7 @@
             <h1><%= product.description %> </h1>
             <form action="/card" method="POST">
                 <button class="btn" type="submit">Add to Card</button>
-                <input type="hidden" value="<%= product.id %>" name="productID">
+                <input type="hidden" value="<%= product._id %>" name="productID">
             </form>
         <% } else { %>
             <p>Product not found.</p>

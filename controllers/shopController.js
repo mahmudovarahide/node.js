@@ -1,8 +1,7 @@
 const Product = require("../models/products");
-const Card = require("../models/card");
 
 exports.getShops = (req, res) => {
-  Product.findAll()
+  Product.fetchAll()
     .then((products) => {
       res.render("shop/shop-list", {
         prods: products,
@@ -19,7 +18,7 @@ exports.getShops = (req, res) => {
 exports.getShop = (req, res) => {
   const prodID = req.params.productID;
 
-  Product.findByPk(prodID)
+  Product.findById(prodID)
     .then((product) => {
       if (product) {
         res.render("shop/product-details", {
@@ -42,7 +41,7 @@ exports.getShop = (req, res) => {
 };
 
 exports.getIndex = (req, res) => {
-  Product.findAll()
+  Product.fetchAll()
     .then((products) => {
       res.render("shop/index", {
         prods: products,
@@ -59,22 +58,12 @@ exports.getIndex = (req, res) => {
 exports.getCard = (req, res) => {
   req.user
     .getCard()
-    .then((card) => {
-      return card
-        .getProducts()
-        .then((products) => {
-          res.render("shop/card", {
-            prods: products,
-            pageTitle: "Your Card",
-            path: "/card",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          res
-            .status(500)
-            .send("An error occurred while fetching card products.");
-        });
+    .then((products) => {
+      res.render("shop/card", {
+        prods: products,
+        pageTitle: "Your Card",
+        path: "/card",
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -84,87 +73,35 @@ exports.getCard = (req, res) => {
 
 exports.postCard = (req, res, next) => {
   const prodID = req.body.productID;
-  let fetchCard;
-  req.user
-    .getCard()
-    .then((card) => {
-      fetchCard = card;
-      return card.getProducts({ where: { id: prodID } });
-    })
-    .then((products) => {
-      let product;
-      if (products.length) {
-        product = products[0];
-      }
-      let newQuantity = 1;
-      if (product) {
-        newQuantity = product.cardItem.quantity + 1;
-      }
-      return Product.findByPk(prodID)
-        .then((product) => {
-          return fetchCard.addProduct(product, {
-            through: { quantity: newQuantity },
-          });
-        })
-        .then(() => {
-          res.redirect("/card");
-        })
-        .catch((err) => {
-          console.log(err);
-          res
-            .status(500)
-            .send("An error occurred while adding product to card.");
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("An error occurred while fetching user's card.");
-    });
-};
-
-exports.postCardDeleteProduct = (req, res, next) => {
-  const prodID = req.body.productID;
-  req.user
-    .getCard()
-    .then((card) => {
-      return card.getProducts({ where: { id: prodID } });
-    })
-    .then((products) => {
-      const product = products[0];
-      return product.cardItem.destroy();
+  Product.findById(prodID)
+    .then((product) => {
+      return req.user.addToCard(product);
     })
     .then((result) => {
       res.redirect("/card");
     })
     .catch((err) => {
       console.log(err);
-      res
-        .status(500)
-        .send("An error occurred while deleting product from card.");
+    });
+};
+
+exports.postCardDeleteProduct = (req, res, next) => {
+  const prodID = req.body.productID;
+  req.user
+    .deleteItemFromCard(prodID)
+    .then((result) => {
+      res.redirect("/card");
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
 
 exports.postOrder = (req, res) => {
   req.user
-    .getCard()
+    .addOrder()
     .then((card) => {
-      return card.getProducts();
-    })
-    .then((products) => {
-      return req.user
-        .createOder()
-        .then((order) => {
-          return order.addProduct(
-            products.map((product) => {
-              product.orderItem = { quantity: product.cardItem.quantity };
-              return product;
-            })
-          );
-        })
-        .then((result) => {
-          res.redirect("/orders");
-        })
-        .catch((err) => console.log(err));
+      res.redirect("/orders");
     })
     .catch((err) => console.log(err));
 };
