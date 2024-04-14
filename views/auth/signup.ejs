@@ -1,0 +1,29 @@
+
+<%- include('../includes/head.ejs') %>
+
+<body>
+    <%- include('../includes/header.ejs') %>
+   <main>
+        <% if(errorMessage){  %>
+            <div><%= errorMessage %></div>
+        <% } %>
+        <form action="/signup" method="POST" novalidate>
+            <div class="form-control">
+                <label for="email"></label>
+                <input type="email" name="email" id="email" placeholder="Email..." value="<%= oldInput.email %>">
+            </div>
+            <div class="form-control">
+                <label for="password"></label>
+                <input type="password" name="password" id="password" placeholder="Password..." value="<%= oldInput.password %>">
+            </div>
+            <div class="form-control">
+                <label for="confirmPassword"></label>
+                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="confirmPassword..." value="<%= oldInput.confirmPassword %>">
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn" type="submit">Sign Up</button>
+        </form>
+   </main>
+</body>
+
+</html>

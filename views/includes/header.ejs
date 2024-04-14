@@ -8,6 +8,7 @@
                 <a href="/products" class="<%= path==="/product"?'active':""
                     %>">Products</a>
             </li>
+            <% if(isAuthenticated){ %>
             <li>
                 <a href="/card" class="<%= path==="/card"?'active':""
                     %>">Card</a>
@@ -16,6 +17,7 @@
                 <a href="/orders" class="<%= path==="/orders"?'active':""
                     %>">Orders</a>
             </li>
+
             <li>
                 <a class="<%= path==="/admin/add-product"?'active':""
                     %>" href="/admin/add-product">Add Product</a>
@@ -24,6 +26,27 @@
                 <a class="<%= path==="/admin/products"?'active':""
                     %>" href="/admin/products">Admin Product</a>
             </li>
+            <% } %>
+        </ul>
+
+        <ul class="header-list">
+            <% if(!isAuthenticated){ %>
+            <li>
+                <a class="<%= path==="/login"?'active':""
+                    %>" href="/login">Login</a>
+            </li>
+            <li>
+                <a class="<%= path==="/signup"?'active':""
+                    %>" href="/signup">Sign Up</a>
+            </li>
+            <% } else{ %>
+            <li>
+                <form action="/logout" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
+            <% } %>
         </ul>
     </nav>
 </header>

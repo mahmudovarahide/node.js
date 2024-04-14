@@ -1,10 +1,11 @@
-const Product = require("../models/products");
+const adminServices = require("../services/adminService");
 
 exports.getAddProduct = (req, res) => {
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
+    isAuthenticated: req.session.isLoggedIn,
   });
 };
 
@@ -13,18 +14,11 @@ exports.postAddProducts = (req, res) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(
-    title,
-    price,
-    description,
-    imageUrl,
-    null,
-    req.user._id
-  );
-  product
-    .save()
+  const userId = req.user._id;
+
+  adminServices
+    .addProduct(title, imageUrl, price, description, userId)
     .then((result) => {
-      console.log(result);
       res.redirect("/admin/products");
     })
     .catch((err) => console.log(err));
@@ -37,7 +31,8 @@ exports.getEditProduct = (req, res) => {
   }
 
   const prodID = req.params.productID;
-  Product.findById(prodID)
+  adminServices
+    .productById(prodID)
     .then((product) => {
       if (!product) {
         return res.redirect("/");
@@ -47,6 +42,7 @@ exports.getEditProduct = (req, res) => {
         path: "/admin/edit-product",
         editing: true,
         product: product,
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -59,15 +55,17 @@ exports.postEditProduct = (req, res, next) => {
   const updateDescription = req.body.description;
   const updateImageUrl = req.body.imageUrl;
 
-  const product = new Product(
-    updateTitle,
-    updatePrice,
-    updateDescription,
-    updateImageUrl,
-    prodID
-  );
-  product
-    .save()
+  adminServices
+    .updateProduct(
+      prodID,
+      {
+        title: updateTitle,
+        price: updatePrice,
+        description: updateDescription,
+        imageUrl: updateImageUrl,
+      },
+      req.user._id
+    )
     .then((result) => {
       res.redirect("/admin/products");
     })
@@ -75,12 +73,15 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res) => {
-  Product.fetchAll()
+  const userId = req.user._id; 
+  adminServices
+    .getProductsByUserId(userId)
     .then((products) => {
       res.render("admin/products", {
         prods: products,
         pageTitle: "Admin Products",
         path: "admin/products",
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -88,7 +89,9 @@ exports.getProducts = (req, res) => {
 
 exports.deleteProduct = (req, res) => {
   const prodID = req.body.productID;
-  Product.deleteById(prodID)
+  const userId = req.user._id;
+  adminServices
+    .deleteProductById(prodID, userId)
     .then(() => {
       res.redirect("/admin/products");
     })

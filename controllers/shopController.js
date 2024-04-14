@@ -1,12 +1,17 @@
 const Product = require("../models/products");
 
 exports.getShops = (req, res) => {
-  Product.fetchAll()
+  let filter = {};
+  if (req.user) {
+    filter = { userId: req.user._id };
+  }
+  Product.find(filter)
     .then((products) => {
       res.render("shop/shop-list", {
         prods: products,
-        pageTitle: "All Products",
+        pageTitle: "My Products",
         path: "/products",
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((err) => {
@@ -25,12 +30,14 @@ exports.getShop = (req, res) => {
           product: product,
           pageTitle: product.title,
           path: "/products",
+          isAuthenticated: req.session.isLoggedIn,
         });
       } else {
         res.render("shop/product-details", {
           product: null,
           pageTitle: "Product Not Found",
           path: "/products",
+          isAuthenticated: req.session.isLoggedIn,
         });
       }
     })
@@ -41,12 +48,17 @@ exports.getShop = (req, res) => {
 };
 
 exports.getIndex = (req, res) => {
-  Product.fetchAll()
+  let filter = {};
+  if (req.user) {
+    filter = { userId: req.user._id };
+  }
+  Product.find(filter)
     .then((products) => {
       res.render("shop/index", {
         prods: products,
-        pageTitle: "Shop",
+        pageTitle: "My Shop",
         path: "/",
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((err) => {
@@ -57,12 +69,14 @@ exports.getIndex = (req, res) => {
 
 exports.getCard = (req, res) => {
   req.user
-    .getCard()
-    .then((products) => {
+    .populate("card.items.productId")
+    .then((user) => {
+      const products = user.card.items;
       res.render("shop/card", {
         prods: products,
         pageTitle: "Your Card",
         path: "/card",
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((err) => {
