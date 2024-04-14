@@ -12,6 +12,7 @@
             <form action="/card" method="POST">
                 <button class="btn" type="submit">Add to Card</button>
                 <input type="hidden" value="<%= product._id %>" name="productID">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
         <% } else { %>
             <p>Product not found.</p>

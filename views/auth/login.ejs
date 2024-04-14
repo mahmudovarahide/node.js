@@ -1,0 +1,28 @@
+
+<%- include('../includes/head.ejs') %>
+
+<body>
+    <%- include('../includes/header.ejs') %>
+   <main>
+        <% if(errorMessage){  %>
+            <div><%= errorMessage %></div>
+        <% } %>
+        <form action="/login" method="POST" novalidate>
+            <div class="form-control">
+                <label for="email"></label>
+                <input type="email" name="email" id="email" placeholder="Email..." value="<%= oldInput.email %>">
+            </div>
+            <div class="form-control">
+                <label for="password"></label>
+                <input type="password" name="password" id="password" placeholder="Password..." value="<%= oldInput.password %>">
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn" type="submit">Login</button>
+            <div class="reset">
+                <a href="/reset" class="reset-password">Reset Password</a>
+            </div>
+        </form>
+   </main>
+</body>
+
+</html>
