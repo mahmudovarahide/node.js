@@ -56,7 +56,7 @@ app.use((req, res, next) => {
       next();
     })
     .catch((err) => {
-      console.log(err);
+      throw Error(err);
     });
 });
 
@@ -69,7 +69,12 @@ app.use((req, res, next) => {
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(userRoutes);
+app.get("/500", errorController.getError500);
 app.use("/", errorController.getError);
+
+app.use((error, req, res, next) => {
+  res.redirect("/500");
+});
 
 mongoose
   .connect(MONGODB_URI)
