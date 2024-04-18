@@ -5,15 +5,6 @@ exports.signUpValidation = [
   check("email")
     .isEmail()
     .withMessage("Please enter a valid email")
-    .custom((value, { req }) => {
-      return User.findOne({ email: value }).then((userDoc) => {
-        if (userDoc) {
-          return Promise.reject(
-            "Email exists already, please pick a different email"
-          );
-        }
-      });
-    })
     .normalizeEmail(),
   body("password", "Please enter min 6 characters")
     .isLength({ min: 6 })
@@ -28,19 +19,33 @@ exports.signUpValidation = [
 ];
 
 exports.loginValidation = [
-  check("email")
-    .isEmail()
-    .withMessage("Please enter a valid email")
-    .custom((value, { req }) => {
-      return User.findOne({ email: value }).then((userDoc) => {
-        if (userDoc) {
-          return Promise.reject("Wrong email address");
-        }
-      });
-    })
-    .normalizeEmail(),
+  check("email").isEmail().withMessage("Please enter a valid email"),
   body("password", "Please enter min 6 characters")
     .isLength({ min: 6 })
     .isAlphanumeric()
+    .trim(),
+];
+
+exports.addProductValidation = [
+  body("title", "Title must be alphanumeric and at least 3 characters long")
+    .isString()
+    .isLength({ min: 3 })
+    .trim(),
+  body("imageUrl", "Please enter a valid URL for image").isURL().trim(),
+  body("price", "Price must be a valid number").isFloat(),
+  body("description", "Description must be between 5 to 100 characters")
+    .isLength({ min: 5, max: 100 })
+    .trim(),
+];
+
+exports.editProductValidation = [
+  body("title", "Title must be alphanumeric and at least 3 characters long")
+    .isString()
+    .isLength({ min: 3 })
+    .trim(),
+  body("imageUrl", "Please enter a valid URL for image").isURL().trim(),
+  body("price", "Price must be a valid number").isFloat(),
+  body("description", "Description must be between 5 to 100 characters")
+    .isLength({ min: 5, max: 100 })
     .trim(),
 ];

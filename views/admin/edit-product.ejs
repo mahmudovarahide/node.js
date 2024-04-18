@@ -1,31 +1,32 @@
 <%- include('../includes/head.ejs') %>
 
 <body>
-    <%- include('../includes/header.ejs') %>
+    <%- include('../includes/header.ejs') %>  
     <main class="add-product product-from">
-        <form action="/admin/<% if(editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
+        <% if(errorMessage){  %>
+            <div><%= errorMessage %></div>
+        <% } %>  
+        <form action="/admin/<% if(editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" novalidate>
             <div class="form-control">
                 <label for="title">Product Name</label>
                 <input id="title" type="text" name="title" placeholder="product name..."
-                    value="<% if(editing) { %> <%= product.title %> <% } %>">
+                    <% if(editing) { %> value="<%= product.title %>" <% } else { %> value="<%= oldInput.title %>" <% } %>>
             </div>
             <div class="form-control">
                 <label for="imageUrl">Image</label>
                 <input type="text" id="imageUrl" name="imageUrl" placeholder="select image..."
-                    value="<% if(editing) { %> <%= product.imageUrl %> <% } %>">
+                    <% if(editing) { %> value="<%= product.imageUrl %>" <% }else { %> value="<%= oldInput.imageUrl %>" <% } %>>
             </div>
             <div class="form-control">
                 <label for="price">Price</label>
                 <input type="number" id="price" name="price" placeholder="price..."
-                    <% if(editing) { %> value="<%= product.price %>" <% } %>>
+                    <% if(editing) { %> value="<%= product.price %>" <% }else { %> value="<%= oldInput.price %>" <% } %>>
             </div>
             <div class="form-control">
                 <label for="description">Description</label>
                 <textarea type="text" id="description" name="description" placeholder="description..." rows="5">
-                    <% if(editing) { %>
-                        <%= product.description %>
-                    <% } %>
-                </textarea>
+                    <% if(editing) { %><%= product.description %><% } else { %><%= oldInput.description %><% } %>
+                </textarea>                
             </div>
             <% if (editing) { %> 
                 <input type="hidden" value="<%= product._id %>" name="productID">
