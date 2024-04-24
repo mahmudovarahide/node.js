@@ -6,16 +6,21 @@
         <% if(errorMessage){  %>
             <div><%= errorMessage %></div>
         <% } %>  
-        <form action="/admin/<% if(editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" novalidate>
+        <form action="/admin/<% if(editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" enctype="multipart/form-data">
             <div class="form-control">
                 <label for="title">Product Name</label>
                 <input id="title" type="text" name="title" placeholder="product name..."
                     <% if(editing) { %> value="<%= product.title %>" <% } else { %> value="<%= oldInput.title %>" <% } %>>
             </div>
-            <div class="form-control">
+            <!-- <div class="form-control">
                 <label for="imageUrl">Image</label>
                 <input type="text" id="imageUrl" name="imageUrl" placeholder="select image..."
                     <% if(editing) { %> value="<%= product.imageUrl %>" <% }else { %> value="<%= oldInput.imageUrl %>" <% } %>>
+            </div> -->
+            <div class="form-control">
+                <label for="imageUrl">Image</label>
+                <input type="file" id="image" name="image" placeholder="select image..."
+                    <% if(editing) { %> value="<%= product.image %>" <% }else { %> value="<%= oldInput.image %>" <% } %>>
             </div>
             <div class="form-control">
                 <label for="price">Price</label>

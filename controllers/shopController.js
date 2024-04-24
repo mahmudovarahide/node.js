@@ -1,5 +1,7 @@
 const Product = require("../models/products");
 
+const ITEMS_PER_PAGE = 3;
+
 exports.getShops = (req, res) => {
   let filter = {};
   if (req.user) {
@@ -52,7 +54,11 @@ exports.getIndex = (req, res) => {
   if (req.user) {
     filter = { userId: req.user._id };
   }
+
+  const page = req.query.page;
   Product.find(filter)
+    .skip((page - 1) * ITEMS_PER_PAGE)
+    .limit(ITEMS_PER_PAGE)
     .then((products) => {
       res.render("shop/index", {
         prods: products,

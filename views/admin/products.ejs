@@ -1,35 +1,35 @@
 <%- include('../includes/head.ejs') %>
 
-    <body>
-        <%- include('../includes/header.ejs') %>
-        <main class="main-section">
-            <% if(prods.length > 0) { %>
-            <div class="d-flex">
-                <% for(let product of prods){ %>
-                <div class="box">
-                    <h1><%= product.title %></h1>
-                    <div class="image-box">
-                        <img
-                            src="<%= product.imageUrl %>"
-                            alt="Books">
-                    </div>
-                    <div class="price-box"><%= product.price %></div>
-                    <div class="description"><%= product.description %></div>
-                   <div>
-                    <a href="/admin/edit-product/<%= product._id %>?edit=true" class="edit">Edit</a>
-                    <form action="/admin/delete-product" method="POST" style="display: inline;">
-                        <input type="hidden" name="productID" value="<%= product._id %>">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button type="submit" class="delete">Delete</button>
-                    </form>
-                   </div>
+<body>
+    <%- include('../includes/header.ejs') %>
+    <main class="main-section">
+        <% if(prods.length > 0) { %>
+        <div class="d-flex">
+            <% for(let product of prods){ %>
+            <div class="box">
+                <h1><%= product.title %></h1>
+                <div class="image-box">
+                    <img src="/<%= product.imageUrl %>" alt="Books">
                 </div>
-                <% } %>
+                <div class="price-box"><%= product.price %></div>
+                <div class="description"><%= product.description %></div>
+                <div>
+                    <a href="/admin/edit-product/<%= product._id %>?edit=true" class="edit">Edit</a>
+                </div>
+                <div>
+                    <input type="hidden" name="productID" value="<%= product._id %>">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="button" class="btn" onclick="deleteProduct(this)">Delete</button>
+                </div>                
             </div>
-            <% } else { %>
-            <h1>Product not found</h1>
             <% } %>
-        </main>
-    </body>
+        </div>
+        <% } else { %>
+        <h1>Product not found</h1>
+        <% } %>
+    </main>
+
+    <script src="/js/admin.js"></script>
+</body>
 
 </html>

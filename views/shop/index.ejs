@@ -10,7 +10,7 @@
                     <h1><%= product.title %></h1>
                     <div class="image-box">
                         <img
-                            src="<%= product.imageUrl %>"
+                            src="/<%= product.imageUrl %>"
                             alt="Books">
                     </div>
                     <div class="price-box"><%= product.price %></div>
@@ -27,6 +27,11 @@
                 </div>
                 <% } %>
             </div>
+
+        <div class="pagination">
+            <a href="/?page=1">1</a>
+            <a href="/?page=2">2</a>
+        </div>
             <% } else { %>
             <h1>Product not found</h1>
             <% } %>

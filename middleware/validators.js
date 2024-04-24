@@ -31,7 +31,6 @@ exports.addProductValidation = [
     .isString()
     .isLength({ min: 3 })
     .trim(),
-  body("imageUrl", "Please enter a valid URL for image").isURL().trim(),
   body("price", "Price must be a valid number").isFloat(),
   body("description", "Description must be between 5 to 100 characters")
     .isLength({ min: 5, max: 100 })
@@ -43,7 +42,6 @@ exports.editProductValidation = [
     .isString()
     .isLength({ min: 3 })
     .trim(),
-  body("imageUrl", "Please enter a valid URL for image").isURL().trim(),
   body("price", "Price must be a valid number").isFloat(),
   body("description", "Description must be between 5 to 100 characters")
     .isLength({ min: 5, max: 100 })

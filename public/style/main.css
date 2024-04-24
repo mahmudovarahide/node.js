@@ -78,3 +78,25 @@ header nav ul li a.active {
   font-size: 18px;
   margin-top: 20px;
 }
+.main-section .pagination {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+.main-section .pagination a {
+  color: white;
+  background-color: rgb(42, 42, 190);
+  border-radius: 50px;
+  padding: 15px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
